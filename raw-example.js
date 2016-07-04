@@ -13,7 +13,7 @@ var setupWaterline = require('./bootstrap');
 
 setupWaterline({
   adapters: {
-    'sails-disk': require('sails-disk')
+    'sails-sqlite': require('./sails-sqlite.js')
   },
   collections: {
     user: {
@@ -23,7 +23,7 @@ setupWaterline({
   },
   connections: {
     tmp: {
-      adapter: 'sails-disk'
+      adapter: 'sails-sqlite'
     }
   }
 }, function waterlineReady (err, ontology) {
