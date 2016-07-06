@@ -124,7 +124,7 @@ function delCookie(name)//删除cookie
    }
   });
   var UsePack= Backbone.Model.extend({
-    urlRoot : "/rest/UsePack/",
+    urlRoot : "/usepack/",
     defaults: function() {
       return {
         id:undefined,name:'',contact:undefined,pack:undefined,hetongbh:""
@@ -132,7 +132,7 @@ function delCookie(name)//删除cookie
     }
   });
   var Pack= Backbone.Model.extend({
-    urlRoot : "/rest/Pack/",
+    urlRoot : "/pack/",
     defaults: function() {
       return {
         id:undefined,name:''
@@ -141,7 +141,7 @@ function delCookie(name)//删除cookie
   });
   //{"itemid": 44, "ct": 1, "name": "镍箔", "pack": 111, "id": 1147},
   var Item= Backbone.Model.extend({
-    urlRoot : "/rest/Item/",
+    urlRoot : "/item/",
     defaults: function() {
       return {
         id:undefined,name:'',guige:'',bh:'',danwei:''
@@ -149,7 +149,7 @@ function delCookie(name)//删除cookie
     }
   });
   var PackItem= Backbone.Model.extend({
-    urlRoot : "/rest/PackItem/",
+    urlRoot : "/packitem/",
     defaults: function() {
       return {
         id:undefined,name:'',itemid:undefined,ct:0,pack:undefined,guige:'',danwei:'',bh:''
@@ -158,22 +158,22 @@ function delCookie(name)//删除cookie
   });
   var PackItemList = Backbone.Collection.extend({
     model: PackItem,
-    url : "/rest/PackItem/",
+    url : "/packitem/",
     parse: function(data, options) {
       //console.log("parse response");
       // if(data.total)
       //   myglobal.total=data.total;
-      return data.data;
+      return data;
    }
   });
   var UsepackList = Backbone.Collection.extend({
     model: UsePack,
-    url : "/rest/UsePack/",
+    url : "/usepack/",
     parse: function(data, options) {
       //console.log("parse response");
       // if(data.total)
       //   myglobal.total=data.total;
-      return data.data;
+      return data;
    }
   });
   var contacts = new ContactList();
@@ -332,38 +332,6 @@ function delCookie(name)//删除cookie
     },
     render: function() {
       this.$el.html(this.template(this.model.toJSON()));
-      this.$("#yujifahuo_date").datepicker({
-            dateFormat: 'yy-mm-dd',
-            numberOfMonths:1,//显示几个月
-            showButtonPanel:true,//是否显示按钮面板
-            clearText:"清除",//清除日期的按钮名称
-            closeText:"关闭",//关闭选择框的按钮名称
-            yearSuffix: '年', //年的后缀
-            showMonthAfterYear:true,//是否把月放在年的后面
-            //defaultDate:'2011-03-10',//默认日期
-            //minDate:'2011-03-05',//最小日期
-            //maxDate:'2011-03-20',//最大日期
-            monthNames: ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'],
-            dayNames: ['星期日','星期一','星期二','星期三','星期四','星期五','星期六'],
-            dayNamesShort: ['周日','周一','周二','周三','周四','周五','周六'],
-            dayNamesMin: ['日','一','二','三','四','五','六'],
-      });
-      this.$("#tiaoshi_date").datepicker({
-            dateFormat: 'yy-mm-dd',
-            numberOfMonths:1,//显示几个月
-            showButtonPanel:true,//是否显示按钮面板
-            clearText:"清除",//清除日期的按钮名称
-            closeText:"关闭",//关闭选择框的按钮名称
-            yearSuffix: '年', //年的后缀
-            showMonthAfterYear:true,//是否把月放在年的后面
-            //defaultDate:'2011-03-10',//默认日期
-            //minDate:'2011-03-05',//最小日期
-            //maxDate:'2011-03-20',//最大日期
-            monthNames: ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'],
-            dayNames: ['星期日','星期一','星期二','星期三','星期四','星期五','星期六'],
-            dayNamesShort: ['周日','周一','周二','周三','周四','周五','周六'],
-            dayNamesMin: ['日','一','二','三','四','五','六'],
-      });
       return this;
     },
   });
@@ -500,6 +468,38 @@ function delCookie(name)//删除cookie
                 , autoOpen: true
        });
       var self=this;
+      this.cev.$("#yujifahuo_date").datepicker({
+            dateFormat: 'yy-mm-dd',
+            numberOfMonths:1,//显示几个月
+            showButtonPanel:true,//是否显示按钮面板
+            clearText:"清除",//清除日期的按钮名称
+            closeText:"关闭",//关闭选择框的按钮名称
+            yearSuffix: '年', //年的后缀
+            showMonthAfterYear:true,//是否把月放在年的后面
+            //defaultDate:'2011-03-10',//默认日期
+            //minDate:'2011-03-05',//最小日期
+            //maxDate:'2011-03-20',//最大日期
+            monthNames: ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'],
+            dayNames: ['星期日','星期一','星期二','星期三','星期四','星期五','星期六'],
+            dayNamesShort: ['周日','周一','周二','周三','周四','周五','周六'],
+            dayNamesMin: ['日','一','二','三','四','五','六'],
+      });
+      this.cev.$("#tiaoshi_date").datepicker({
+            dateFormat: 'yy-mm-dd',
+            numberOfMonths:1,//显示几个月
+            showButtonPanel:true,//是否显示按钮面板
+            clearText:"清除",//清除日期的按钮名称
+            closeText:"关闭",//关闭选择框的按钮名称
+            yearSuffix: '年', //年的后缀
+            showMonthAfterYear:true,//是否把月放在年的后面
+            //defaultDate:'2011-03-10',//默认日期
+            //minDate:'2011-03-05',//最小日期
+            //maxDate:'2011-03-20',//最大日期
+            monthNames: ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'],
+            dayNames: ['星期日','星期一','星期二','星期三','星期四','星期五','星期六'],
+            dayNamesShort: ['周日','周一','周二','周三','周四','周五','周六'],
+            dayNamesMin: ['日','一','二','三','四','五','六'],
+      });
       this.pev.$("#auto_pack1").autocomplete({
                 minLength: 1
                 , focus: function (event, ui) {
@@ -566,16 +566,7 @@ function delCookie(name)//删除cookie
     },
     newcontact:function(){
         var editview= new ContactEditView2({model: new Contact()});
-        editview.render();//must call because editview has no element now;
-        editview.$el.dialog({
-                width:600,height:600,
-                modal: false
-                , overlay: {
-                    backgroundColor: '#000'
-                    , opacity: 0.5
-                }
-                , autoOpen: true
-       });
+        editview.showdialog();
     },
     mysearch:function(){
        myglobal.search=this.$("#id_input_search").val();
@@ -607,7 +598,7 @@ function delCookie(name)//删除cookie
         this.$("#contact-list").empty();
         contacts.fetch({
             reset:true,
-            data: { start:myglobal.start,limit:myglobal.limit,search:myglobal.search,baoxiang:myglobal.baoxiang},
+            //data: { start:myglobal.start,limit:myglobal.limit,search:myglobal.search,baoxiang:myglobal.baoxiang},
             success:function(){
                 //console.log(contacts.length+" contacts")
                 this.$("#page").empty();
@@ -759,7 +750,7 @@ function delCookie(name)//删除cookie
               //console.log(data);
               data=JSON.parse(data);
               if (data.success) {
-                   user=data.data.name;
+                   user=data.name;
                    csrf_token=getCookie('csrftoken'); //Ext.util.Cookies.get("csrftoken");
                   $("#dropdownMenu1_text").text(user);
                   $("#li_login").attr("hidden",true);
@@ -915,15 +906,15 @@ function delCookie(name)//删除cookie
                 }
                 , source: function (request, response) {
                     var term = request.term;
-                    request={ query: term };
+                    //request={ query: term };
                     if (term in cache_item) {
                         data = cache_item[term];
-                        response(data.data);
+                        response(data);
                         return;
                     }
-                    $.getJSON("/rest/Item", request, function (data, status, xhr) {
+                    $.getJSON("/item/", request, function (data, status, xhr) {
                         cache_item[term] = data;
-                        response(data.data);
+                        response(data);
                     });
                 }
             }).autocomplete("instance")._renderItem = function (ul, item) {
@@ -993,7 +984,7 @@ function delCookie(name)//删除cookie
         this.$("#packitem-list").empty();
         this.packitems.fetch({
             reset:true,
-            data: { pack:this.model.get("pack"),start:0,limit:200},
+            data: { pack:this.model.get("pack")},//start:0,limit:200},
             success:function(){
                 ////console.log(this.usepacks.length+" usepacks")
                 // this.$("#page").empty();
@@ -1263,7 +1254,7 @@ function delCookie(name)//删除cookie
  </td><td>
       <%- tiaoshi_date %>
  </td><td>
-      <a class="contact_edit"><%- hetongbh %></a>
+      <a class="contact_edit">[[<%- hetongbh %>]]</a>
  </td><td>
       <a href="/media/<%- method %>"><%- method %></a>
  </td>
