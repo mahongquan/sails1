@@ -101,7 +101,7 @@ function delCookie(name)//删除cookie
   // };
   var myglobal={};
   var Contact = Backbone.Model.extend({
-    urlRoot : "/rest/Contact/",
+    urlRoot : "/contact/",
     //fields:['id', 'yonghu', 'addr', 'channels', 'yiqixinghao', 'yiqibh', 'baoxiang', 'shenhe', 'yujifahuo_date', 'tiaoshi_date', 'hetongbh', 'method'],
     defaults: function() {
       var d=new Date();
@@ -113,13 +113,14 @@ function delCookie(name)//删除cookie
   });
   var ContactList = Backbone.Collection.extend({
     model: Contact,
-    url : "/rest/Contact/",
+    url : "/contact/",
     //localStorage: new Backbone.LocalStorage("contacts-backbone"),
    parse: function(data, options) {
-     console.log("parse response:"+data.total);
-      if(data.total!=undefined)
-        myglobal.total=data.total;
-      return data.data;
+     console.log("parse response:"+data);
+      // if(data.total!=undefined)
+      //   myglobal.total=data.total;
+      // return data.data;
+      return data;
    }
   });
   var UsePack= Backbone.Model.extend({
