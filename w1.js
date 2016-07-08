@@ -1,47 +1,25 @@
 var Waterline = require('waterline');
-//var sailsMemoryAdapter = require('./sails-sqlite.js');
-var sailsMemoryAdapter = require('sails-disk');
+var sailsDiskAdapter = require('sails-disk');
 var waterline = new Waterline();
-var userCollection = Waterline.Collection.extend({
-    identity: 'user',
-    connection: 'default',
-    attributes: {
-        firstName: 'string',
-        lastName: 'string',
-
-        // Add a reference to Pets
-        pets: {
-            collection: 'pet',
-            via: 'owner'
-        }
-    }
+var Contact=require("./api/models/Contact.js");
+// var Contact=require("./api/models/Contact.js");
+// var Contact=require("./api/models/Contact.js");
+console.log(contact);
+var contactCollection = Waterline.Collection.extend({
+    identity: 'contact',
+    connection: 'localDiskDb',
+    attributes: Contact.attributes
 });
-var petCollection = Waterline.Collection.extend({
-    identity: 'pet',
-    connection: 'default',
-    attributes: {
-        breed: 'string',
-        type: 'string',
-        name: 'string',
-
-        // Add a reference to User
-        owner: {
-            model: 'user'
-        }
-    }
-});
-waterline.loadCollection(userCollection);
-waterline.loadCollection(petCollection);
+waterline.loadCollection(contactCollection);
 var config = {
     adapters: {
-        'memory': sailsMemoryAdapter
-        //'sails-sqlite': sailsMemoryAdapter
+        'sails-disk': sailsDiskAdapter
     },
 
     connections: {
-        default: {
+        localDiskDb: {
             //adapter: 'sails-sqlite'
-            adapter: 'memory'
+            adapter: 'sails-disk'
         }
     }
 };
@@ -51,28 +29,28 @@ waterline.initialize(config, function (err, ontology) {
     }
 
     // Tease out fully initialised models.
-    var User = ontology.collections.user;
-    var Pet = ontology.collections.pet;
+    // var User = ontology.collections.user;
+    // var Pet = ontology.collections.pet;
 
-    User.create({ // First we create a user.
-            firstName: 'Neil',
-            lastName: 'Armstrong'
-        }).then(function (user) { // Then we create the pet
-            return Pet.create({
-                breed: 'beagle',
-                type: 'dog',
-                name: 'Astro',
-                owner: user.id
-            });
+    // User.create({ // First we create a user.
+    //         firstName: 'Neil',
+    //         lastName: 'Armstrong'
+    //     }).then(function (user) { // Then we create the pet
+    //         return Pet.create({
+    //             breed: 'beagle',
+    //             type: 'dog',
+    //             name: 'Astro',
+    //             owner: user.id
+    //         });
 
-        }).then(function (pet) { // Then we grab all users and their pets
-            return User.find().populate('pets');
+    //     }).then(function (pet) { // Then we grab all users and their pets
+    //         return User.find().populate('pets');
 
-        }).then(function(users){ // Results of the previous then clause are passed to the next
-        	console.log('users');
-            console.dir(users);
+    //     }).then(function(users){ // Results of the previous then clause are passed to the next
+    //     	console.log('users');
+    //         console.dir(users);
 
-        }).catch(function(err){ // If any errors occur execution jumps to the catch block.
-            console.error(err);
-        });
+    //     }).catch(function(err){ // If any errors occur execution jumps to the catch block.
+    //         console.error(err);
+    //     });
 });
