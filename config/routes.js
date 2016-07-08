@@ -46,6 +46,7 @@ module.exports.routes = {
   *                                                                          *
   ***************************************************************************/
   'get /signup': { view: 'signup' },
+  'get /parts/showcontact/':'ContactController.show',
   'post /signup': 'UserController.signup',
   '/login': 'UserController.login',
   '/logout': 'UserController.logout'

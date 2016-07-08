@@ -6,6 +6,9 @@
  */
 var actionUtil = require('./actionUtil'), _ = require('lodash');
 module.exports = {
+  show:function(req, res) {
+    return res.send("I am a contact");
+  },
   login: function (req, res) {
     return res.send("Hi there!");
   },
@@ -16,7 +19,7 @@ module.exports = {
     return res.redirect("http://www.baidu.com");
   },
   find:function(req,res){
-  	console.log("find===================");
+  	console.log("find contact===================");
   	// Look up the model
   var Model = actionUtil.parseModel(req);
 

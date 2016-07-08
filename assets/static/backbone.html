@@ -152,7 +152,7 @@ function delCookie(name)//删除cookie
     urlRoot : "/packitem/",
     defaults: function() {
       return {
-        id:undefined,name:'',itemid:undefined,ct:0,pack:undefined,guige:'',danwei:'',bh:''
+        id:undefined,name:'',item:undefined,ct:0,pack:undefined,guige:'',danwei:'',bh:''
       };
     }
   });
@@ -495,7 +495,7 @@ function delCookie(name)//删除cookie
                     return false;
                 }
                 , select: function (event, ui) {
-                    self.pev.addrow(ui.item.pk, ui.item.value);
+                    self.pev.addrow(ui.item.id, ui.item.name);
                     return false;
                 }
                 , source: function (request, response) {
@@ -505,14 +505,14 @@ function delCookie(name)//删除cookie
                         response(data);
                         return;
                     }
-                    $.getJSON("/admin/lookups/ajax_lookup/pack", request, function (data, status, xhr) {
+                    $.getJSON("/pack", request, function (data, status, xhr) {
                         cache[term] = data;
                         response(data);
                     });
                 }
             }).autocomplete("instance")._renderItem = function (ul, item) {
                 return $("<li>")
-                    .append("<a>" + item.pk + "_" + item.value + "</a>")
+                    .append("<a>" + item.id + "_" + item.name + "</a>")
                     .appendTo(ul);
             }; 
 
@@ -890,7 +890,7 @@ function delCookie(name)//删除cookie
                     return false;
                 }
                 , select: function (event, ui) {
-                    packitemListView.addrow(ui.item.id, ui.item.name);
+                    packitemListView.addrow(ui.item.id, ui.item.name,ui.item.guige,ui.item.bh,ui.item.danwei);
                     return false;
                 }
                 , source: function (request, response) {
@@ -964,16 +964,17 @@ function delCookie(name)//删除cookie
           context.set(model.data);
           //self.usepacks.add(p);
           //alert("success");
-          self.addrow(p.get("id"),p.get("name"));
+          self.addrow(p.get("id"),p.get("name"),p.get("guige"),p.get('bh'),p.get("danwei"));
           self.$("#new_item1").val("");
         }
       });
     },
     mysetdata:function(){
+        console.log("packitem-list fetch");
         this.$("#packitem-list").empty();
         this.packitems.fetch({
             reset:true,
-            data: { pack:this.model.get("pack"),skip:0,limit:200},
+            data: { pack:this.model.get("pack").id,skip:0,limit:200},
             success:function(){
                 ////console.log(this.usepacks.length+" usepacks")
                 // this.$("#page").empty();
@@ -995,12 +996,12 @@ function delCookie(name)//删除cookie
        // this.$("#packitem-edit").append(this.pie.render().el);
        this.mysetdata();
     },
-    addrow:function(pk,value){
+    addrow:function(pk,value,guige,bh,danwei){//id,name,guige,bh
       //console.log(pk);
       //console.log(value);
       var p=new PackItem();
       var self=this;
-      p.set({pack:this.model.get("pack"),name:value,itemid:pk,ct:1});
+      p.set({pack:this.model.get("pack").id,name:value,item:pk,ct:1,guige:guige,bh:bh,danwei:danwei});
       p.save(null,{
         success:function(context, model, resp, options){
           //console.log(options);
@@ -1058,16 +1059,17 @@ function delCookie(name)//删除cookie
         this.model.destroy({ data:data,contentType:"application:json"});     
     },
     delete:function(){
-      var deleteview = new DeleteView({callback:this.true_delete,obj:this});
-           deleteview.render();
-           deleteview.$el.dialog({
-                modal: true
-                , overlay: {
-                    backgroundColor: '#000'
-                    , opacity: 0.5
-                }
-                , autoOpen: true
-           });
+      this.true_delete();
+      // var deleteview = new DeleteView({callback:this.true_delete,obj:this});
+      //      deleteview.render();
+      //      deleteview.$el.dialog({
+      //           modal: true
+      //           , overlay: {
+      //               backgroundColor: '#000'
+      //               , opacity: 0.5
+      //           }
+      //           , autoOpen: true
+      //      });
     },
     initialize: function() {
       this.listenTo(this.model, 'change', this.render);
@@ -1106,7 +1108,7 @@ function delCookie(name)//删除cookie
        //save Item///////////////////////
        var item=new Item();
        item.set(data);
-       item.set({id:data["itemid"]});
+       item.set({id:data["item"]});
        item.save(null,{
         success:function(context, model, resp, options){
           //console.log(options);
@@ -1426,7 +1428,7 @@ function delCookie(name)//删除cookie
       <table  class="table-bordered" >
     　<thead>
     　　<tr>
-    　　　<td>ID</td><td>编号</td><td>名称</td><td>规格</td><td>数量</td><td hidden="true">pack</td><td hidden="true">itemid</td><td>操作</td>
+    　　　<td>ID</td><td>编号</td><td>名称</td><td>规格</td><td>数量</td><td hidden="true">pack</td><td hidden="true">item</td><td>操作</td>
     　　</tr>
    　</thead> 
       <tbody id="packitem-list">
@@ -1442,7 +1444,7 @@ function delCookie(name)//删除cookie
   </script>
 <!--   //{"itemid": 44, "ct": 1, "name": "镍箔", "pack": 111, "id": 1147}, -->
   <script type="text/template" id="packitem-template">
-    　　　<td><%- id %></td><td><%- bh %></td><td><%- name %></td><td><%- guige %></td><td><%- ct %><%- danwei %></td><td hidden="true"><%- pack %></td><td hidden="true"><%- itemid %></td><td><button class="packitem_edit" data="<%- id %>">编辑</button><button  class="packitem_delete" data="<%- id %>">删除</button></td>
+    　　　<td><%- id %></td><td><%- bh %></td><td><%- name %></td><td><%- guige %></td><td><%- ct %><%- danwei %></td><td hidden="true"><%- pack %></td><td hidden="true"><%- item %></td><td><button class="packitem_edit" data="<%- id %>">编辑</button><button  class="packitem_delete" data="<%- id %>">删除</button></td>
   </script>
     <script type="text/template" id="packitem-edit-template">
     <table  class="table-condensed" >
@@ -1456,10 +1458,10 @@ function delCookie(name)//删除cookie
             </tr>
              <tr>
                 <td>
-                    <label>itemid:</label>
+                    <label>item:</label>
                 </td>
                 <td>
-                    <input type="text" id="itemid" name="itemid" readonly="true"      value="<%- itemid %>">
+                    <input type="text" id="item" name="item" readonly="true"      value="<%- item %>">
                 </td>
             </tr>
             <tr>
