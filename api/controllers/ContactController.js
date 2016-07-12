@@ -5,10 +5,16 @@
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
 var actionUtil = require('./actionUtil'), _ = require('lodash');
+var ejs = require('ejs');
 var zl=function(contact,packitems){
-  var r=""+contact;
-  r=r+packitems;
-  return(r);
+  var str = require('fs').readFileSync(__dirname + '/../../views/showcontact.ejs', 'utf8');  
+  var r=[];
+  for(var i in packitems){
+    for(var j in packitems[i]){
+      r.push(packitems[i][j]);
+    }
+  }
+  return ejs.render(str, {contact:contact,packitems:r});
 };
 module.exports = {
   show:function(req, res) {
@@ -19,6 +25,9 @@ module.exports = {
           console.log(usepacks);
           var r=[];
           var j=0;
+          if(usepacks.length==0){
+            res.ok(zl(contact,[]));
+          }
           for(var i=0;i<usepacks.length;i++)
           {
             console.log(i);
@@ -27,7 +36,7 @@ module.exports = {
               console.log(i+":"+usepacks[i]);
               r.push(packitems);
               if(j==usepacks.length){
-                res.ok(zl(contact,packitems));
+                res.ok(zl(contact,r));
               }
             });
           }
